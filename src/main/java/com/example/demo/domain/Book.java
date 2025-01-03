@@ -2,7 +2,9 @@ package com.example.demo.domain;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -15,19 +17,23 @@ public class Book {
 
     String title;
     String author;
-    String publisher;
 
-    String category;
     Integer count;
 
-    @ManyToMany
-    @JoinTable(
-            name = "borrow_user",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id")
-    )
+    private boolean isAvailable = true;
 
-    private Set<User> users = new HashSet<>(); // ManyToMany 아래에는 Set 이나 List 형태의 도메인을 가져와야 함
+    @OneToMany(mappedBy = "book")
+    private List<Loan> loans;
+
+    public Book(String title, String author) {
+        this.title = title;
+        this.author = author;
+        this.isAvailable = true;
+    }
+
+    public Book() {
+
+    }
 
     public Long getId() {
         return id;
@@ -53,27 +59,27 @@ public class Book {
         this.author = author;
     }
 
-    public String getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public Integer getCount() {
         return count;
     }
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+
+    public List<Loan> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(List<Loan> loans) {
+        this.loans = loans;
     }
 }

@@ -2,6 +2,7 @@ package com.example.demo.domain;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -17,6 +18,9 @@ public class User {
 
     private String username;
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<Loan> loans;
 
 
     public String getEmail() {
@@ -50,9 +54,6 @@ public class User {
     public Long getId() {
         return id;
     }
-
-    @ManyToMany(mappedBy = "users")
-    private Set<Book> books;
 
 }
 
